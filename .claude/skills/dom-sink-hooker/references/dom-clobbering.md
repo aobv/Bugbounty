@@ -36,7 +36,15 @@ Harte Punkte, die in der Praxis beißen:
 | `CFG.template` in `innerHTML` | Anchor-Variante | href-String wird als Markup geparst |
 | Sanitizer-Config aus einer globalen Variable | `<form id=CFG><input name=ALLOWED_TAGS></form>` | Filter-Logik gegen sich selbst wenden (siehe Abschnitt 4) |
 
-Ziele findest du nicht durch Raten: Bundle mit `npx --no-install prettier --parser babel BUNDLE.js` lesbar machen und nach Lesezugriffen auf Globals suchen, insbesondere nach `\|\|`- und `\?\?`-Defaults sowie nach `window\.[A-Z][\w$]*`.
+Ziele findest du nicht durch Raten: Bundle mit `npx --no-install prettier --parser babel BUNDLE.js > BUNDLE.pretty.js` lesbar machen und nach Lesezugriffen auf Globals suchen. PCRE, also `grep -P` — unter `grep -E` ist `[\w$]` die Zeichenmenge `\`, `w`, `$` und das Muster läuft ins Leere:
+
+```bash
+# Globals in Grossschreibung, der uebliche Config-Namensstil
+grep -nP 'window\.[A-Z][\w$]*' BUNDLE.pretty.js
+# Defaults, bei denen ein fehlendes Global gratis durch einen String ersetzt wird
+grep -nP "\|\|\s*['\"/]" BUNDLE.pretty.js
+grep -nP "\?\?\s*['\"/]" BUNDLE.pretty.js
+```
 
 ## 3. Typische Angriffspunkte
 
@@ -57,7 +65,7 @@ Genau dann, wenn **Markup durchkommt, aber Attribute und Handler gestrippt werde
 ## 5. Nachweis mit den Hooks
 
 1. Marker vor der Injektion setzen: `window.__XSS_MARKERS = ['DX_XSS','xss7q3z']`. `__xssMarkers()` ändert nur das Array von `sink-hook.js` und lässt `source-watch.js` auf den Defaults.
-2. Injektionsreihenfolge bindend: `assets/hooks/sink-hook.js` → `assets/hooks/source-watch.js` → `assets/hooks/postmessage-watch.js`.
+2. Injektionsreihenfolge wie in `../SKILL.md`: `../assets/hooks/sink-hook.js` → `../assets/hooks/source-watch.js` → `../assets/hooks/postmessage-watch.js`. Jede Datei genau einmal.
 3. Marker in den geclobberten Wert legen, nicht in den Bezeichner: `<a id=CFG><a id=CFG name=url href="https://example.invalid/xss7q3z">`.
 4. Markup über den **echten Eingabepfad** einbringen (Kommentarfeld, Profilname, Parameter) — nicht per Konsole ins DOM schreiben.
 5. `__xssDump(true)` auswerten: ein tainted Eintrag auf `script.src`, `setAttribute:src`, `a.href`, `innerHTML`, `fetch` oder `location.assign` belegt, dass der geclobberte Wert die Sink erreicht.

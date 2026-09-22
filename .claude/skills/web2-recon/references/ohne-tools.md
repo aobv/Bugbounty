@@ -1,6 +1,6 @@
 # Fallback: Recon ohne ein einziges Go-Binary
 
-Alle Snippets hier sind in einer Umgebung ohne `subfinder`, `httpx`, `katana`, `gau`, `waybackurls`, `ffuf`, `dnsx`, `assetfinder`, `nuclei` — und ohne `dig`, `nslookup`, `host` — lauffähig getestet. Gebraucht werden nur `curl`, `python3`, `node`, `npx`, `jq`, `grep -P`.
+Alle Snippets hier sind für eine Umgebung ohne `subfinder`, `httpx`, `katana`, `gau`, `waybackurls`, `ffuf`, `dnsx`, `assetfinder`, `nuclei` — und ohne `dig`, `nslookup`, `host` — geschrieben. Gebraucht werden nur `curl`, `python3`, `node`, `npx`, `jq`, `grep -P`; das Vorhandensein dieser sechs ist geprüft, ebenso die Syntax jedes Snippets. Was gegen eine **externe Quelle** läuft (crt.sh, Wayback), ist hier nicht end-to-end gelaufen, weil der Egress dieser Umgebung sie blockt — beim ersten Lauf mit Egress Rückgabeformat und Feldnamen gegen die tatsächliche Antwort prüfen.
 
 Vor dem ersten Aufruf: Scope-Checkliste aus `pipeline.md` Abschnitt 0. `APEX` und `TARGET` sind Platzhalter, keine Beispiele.
 
@@ -168,6 +168,17 @@ if __name__ == '__main__':
 ```
 
 Der Hash-Vergleich versagt bei dynamischen 404-Seiten, die den angefragten Pfad im Body spiegeln — dann auf Längen-Buckets mit Toleranz ausweichen. `rps` ist Pflichtparameter, nicht Empfehlung. Erlaubt die Policy kein Fuzzing, entfällt diese Stufe ganz; dann werden nur beobachtete Pfade geprüft.
+
+## 5b — Endpunkte und Secrets aus Bundles (ohne LinkFinder/SecretFinder)
+
+Ersatz für die fehlenden Extraktions-Tools ist `grep -P` bzw. python-`re`. Die vollständigen Muster für Endpunkte, Secrets und SPA-Routen stehen in `js-und-sourcemaps.md` Abschnitt 4–6, unmaskiert und lauffähig in `../scripts/recon.sh` Stufe 6. Der wichtigste Einzeiler, weil er auch im minifizierten Bundle trifft:
+
+```bash
+grep -oPh "\b[A-Za-z_\$][\w\$]*\s*\.\s*(get|post|put|patch|delete|request|head)\s*\(\s*['\"\`][^'\"\`]+" \
+  recon-out/js/* | sort -u
+```
+
+Muster, die auf sprechende Bezeichner setzen (`axios.`, `api.`, `client.`), treffen im Bundle nicht — die Namen sind wegminifiziert. Jeder Treffer ist Kandidat, kein Finding.
 
 ## 6 — Was hier nicht geht
 

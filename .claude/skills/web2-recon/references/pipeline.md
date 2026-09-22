@@ -1,8 +1,8 @@
 # Pipeline: Stufe für Stufe, mit und ohne Standard-Binaries
 
-Jede Stufe zweigleisig. Spalte "Binaries" gilt nur, wenn `command -v` das Werkzeug wirklich findet. Spalte "Fallback" ist in dieser Umgebung verifiziert und braucht nur curl, python3, node, npx, jq.
+Jede Stufe zweigleisig. Spalte "Binaries" gilt nur, wenn `command -v` das Werkzeug wirklich findet. Spalte "Fallback" braucht nur curl, python3, node, npx, jq — deren Vorhandensein ist geprüft, ebenso die Syntax der Snippets. Die netzabhängigen Fallbacks (crt.sh, Wayback) sind hier nicht end-to-end gelaufen; Rückgabeformat beim ersten Lauf mit Egress gegen die echte Antwort prüfen.
 
-| Stufe | Binaries (falls vorhanden) | Fallback (immer verfügbar) |
+| Stufe | Binaries (falls vorhanden) | Fallback (nur curl/python3/node/jq) |
 |---|---|---|
 | 0 Scope | — | Checkliste unten, manuell |
 | 1 Subdomains | `subfinder`, `assetfinder`, `dnsx` | crt.sh + `jq`, DNS-Bruteforce über `socket.getaddrinfo` |
@@ -31,12 +31,12 @@ Default-Kennung, solange die Policy nichts anderes fordert: `User-Agent: denibkv
 Mit Binaries:
 
 ```bash
-subfinder -d APEX -all -silent | anew subs.txt        # nur wenn installiert
-assetfinder --subs-only APEX >> subs.txt
+subfinder -d APEX -all -silent  >> subs.txt   # jede Zeile nur ausfuehren, wenn
+assetfinder --subs-only APEX    >> subs.txt   # command -v das Binary wirklich findet
 sort -u subs.txt | dnsx -silent -a -resp > resolved.txt
 ```
 
-Fallback, verifiziert — das `%` im Wildcard muss als `%25` kodiert sein, sonst schluckt es curl:
+Fallback — das `%` im Wildcard muss als `%25` kodiert sein, sonst schluckt es curl:
 
 ```bash
 curl -sS --compressed --max-time 60 --retry 3 --retry-delay 5 \
@@ -82,7 +82,7 @@ CSP steht oft zusätzlich in `<meta http-equiv>`. Nur eine der beiden Quellen zu
 
 Mit Binaries: `gau APEX`, `waybackurls APEX`.
 
-Fallback, verifiziert:
+Fallback:
 
 ```bash
 curl -sS --compressed --max-time 120 -A 'denibkv-hackerone-research' \

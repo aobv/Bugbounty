@@ -33,6 +33,8 @@ Grundregel: Du rätst nie über Datenflüsse. Du beobachtest sie. Jede Aussage "
 | Cross-Origin-iframe auf der Seite | Abschnitt 5 (DevTools-Kontext auf den Frame wechseln, dort injizieren) |
 | Jede Navigation killt die Hooks | Abschnitt 6 (CDP `Page.addScriptToEvaluateOnNewDocument`, sonst Re-Injection-Routine) |
 | Site hat Debugger-/Tamper-Erkennung | Abschnitt 7 (Minimal-Instrumentierung, nur benötigte Hooks) |
+| Wert stammt nicht aus einer Source, sondern aus einem Options-/Config-Objekt | `references/prototype-pollution.md` — Pollution, Gadget und Opferpfad getrennt belegen |
+| Markup kommt durch, aber Attribute und Handler werden gestrippt | `references/dom-clobbering.md` — `id`/`name` gegen Globals und Config-Properties |
 
 ## Helper-API
 

@@ -18,7 +18,7 @@ PAR="${RECON_PAR:-5}"
 WORDLIST="${RECON_WORDLIST:-}"
 APEX=""; OUT=""; SCOPE_OK=0; WARNINGS=0
 
-usage() { sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; }
 
 info() { printf '\033[1m[*]\033[0m %s\n' "$*"; }
 ok()   { printf '[+] %s\n' "$*"; }
@@ -129,8 +129,8 @@ stufe_dns() {
   info "Stufe 2 — Wildcard-Check und Aufloesung"
   have python3 || { warn "python3 fehlt — Stufe 2 uebersprungen."; return 0; }
 
-  local wc
-  wc="$(python3 - "$APEX" <<'PY' 2>/dev/null || echo 'DNS-FEHLER'
+  local wcheck
+  wcheck="$(python3 - "$APEX" <<'PY' 2>/dev/null || echo 'DNS-FEHLER'
 import socket, sys
 apex = sys.argv[1]
 try:
@@ -142,15 +142,17 @@ except Exception:
     print('DNS-FEHLER')
 PY
 )"
-  printf 'Wildcard-Check %s: %s\n' "$APEX" "$wc" | tee "$OUT/02-wildcard.txt"
-  case "$wc" in
+  printf 'Wildcard-Check %s: %s\n' "$APEX" "$wcheck" | tee "$OUT/02-wildcard.txt"
+  case "$wcheck" in
     WILDCARD*) warn "Wildcard-DNS aktiv — Bruteforce-Treffer sind wertlos, Stufe uebersprungen." ; return 0 ;;
     DNS-FEHLER) ausfall "DNS-Aufloesung" ; return 0 ;;
   esac
 
   # Kandidatenliste: eigene Recon-Ergebnisse schlagen jede generische Wordlist.
-  : > "$TMP/cand.txt"
-  [ -s "$OUT/01-subdomains.txt" ] && sed "s/\.${APEX//./\\.}$//" "$OUT/01-subdomains.txt" >> "$TMP/cand.txt"
+  printf '%s\n' "$APEX" > "$TMP/cand.txt"
+  if [ -s "$OUT/01-subdomains.txt" ]; then
+    sed "s/\.${APEX//./\\.}$//" "$OUT/01-subdomains.txt" >> "$TMP/cand.txt"
+  fi
   if [ -n "$WORDLIST" ] && [ -r "$WORDLIST" ]; then
     cat "$WORDLIST" >> "$TMP/cand.txt"
   elif [ -n "$WORDLIST" ]; then
@@ -399,7 +401,7 @@ stufe_js() {
       case "$smurl" in
         data:*) continue ;;
         http*)  : ;;
-        /*)     smurl="https://${APEX}${smurl}" ;;
+        /*)     smurl="$(printf '%s' "$u" | sed -E 's#^(https?://[^/]+).*#\1#')${smurl}" ;;
         *)      base="${u%/*}"; smurl="${base}/${smurl}" ;;
       esac
       if "${CURL[@]}" "$smurl" -o "$TMP/map.json" 2>/dev/null; then
@@ -509,10 +511,10 @@ Lauf beendet: $(date '+%Y-%m-%d %H:%M') | Kennung: $UA | Warnungen: $WARNINGS
 ## Naechste Schritte
 
 1. CSP aus 03/05 (Header **und** Meta) auswerten — entscheidet, welche Payload-Klassen ueberhaupt Sinn ergeben.
-2. Bundles lesbar machen: \`npx --no-install prettier --parser babel js/<datei>\`, dann Sink-Arbeit mit **dom-sink-hooker**.
+2. Bundles lesbar machen: \`npx --no-install prettier --parser babel js/BUNDLE > js/BUNDLE.pretty.js\`, dann Sink-Arbeit mit **dom-sink-hooker**.
 3. Reflection-Sonde auf 04-parameter.txt: Marker \`xss7q3z\` je Parameter, Kontext des Treffers bestimmen.
-4. Blocker beobachtet? → **waf-sanitizer-playbook**: references/bypass-map.md + references/payload-ladders.md.
-5. Upload-Flaechen aus dem Crawl → references/upload-vektoren.md.
+4. Blocker beobachtet? → **waf-sanitizer-playbook**: .claude/skills/waf-sanitizer-playbook/references/bypass-map.md und references/payload-ladders.md.
+5. Upload-Flaechen aus dem Crawl → .claude/skills/web2-recon/references/upload-vektoren.md.
 6. Zustandsaendernder Endpunkt, der einen Stored-Sink fuettert → optional **csrf-hunter** fuer die Chain.
 
 Recon liefert Angriffsflaeche, keine Findings. Nichts aus dieser Ablage ist bewertet.

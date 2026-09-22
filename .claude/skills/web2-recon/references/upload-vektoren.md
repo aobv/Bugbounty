@@ -23,7 +23,7 @@ Der ergiebigste Vektor, weil SVG legitimer Bild-Upload ist und trotzdem Skript t
 
 - Ausführung nur, wenn die Datei **direkt** aufgerufen wird und als `image/svg+xml` oder `text/html` ausgeliefert wird. Eingebettet über `<img src=…>` führt SVG **kein** Skript aus — der direkte Link ist der Beweis, nicht die Vorschau in der App.
 - Konstrukte, die es zu testen lohnt: `<script>` im SVG-Namespace, `onload` am `<svg>`-Element, `<foreignObject>` mit HTML-Inhalt, `<animate>`/`<set>` mit `attributeName="href"`, externe Referenz über `xlink:href`.
-- Sanitizer im Spiel (serverseitig oder clientseitig)? Dann ist das eine Sanitizer-Aufgabe: `waf-sanitizer-playbook/references/dompurify.md`, bei Roundtrip-Verdacht `references/mxss.md`.
+- Sanitizer im Spiel (serverseitig oder clientseitig)? Dann ist das eine Sanitizer-Aufgabe: `waf-sanitizer-playbook/references/dompurify.md`, bei Roundtrip-Verdacht `waf-sanitizer-playbook/references/mxss.md`.
 
 ### HTML / HTM / XHTML
 

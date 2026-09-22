@@ -72,7 +72,7 @@ Drei Punkte, die nicht optional sind: `try/catch` um `res.body()` (wirft bei Red
 Minifizierte Bundles vor der Sink-Analyse lesbar machen:
 
 ```bash
-npx --no-install prettier --parser babel recon-out/js/<datei> > <datei>.pretty.js
+npx --no-install prettier --parser babel recon-out/js/BUNDLE > recon-out/js/BUNDLE.pretty.js
 ```
 
 ## 2 — Source Maps finden
@@ -135,6 +135,8 @@ Zweiter Fall, der abgefangen werden muss: `sourcesContent` fehlt oder einzelne E
 | fetch-Aufruf | ``\bfetch\s*\(\s*['"`]([^'"`]+)`` |
 | baseURL | ``\bbaseURL\s*[:=]\s*['"`]([^'"`]+)`` |
 | HTTP-Methode auf beliebigem Bezeichner | ``\b[A-Za-z_$][\w$]*\s*\.\s*(get\|post\|put\|patch\|delete\|request\|head)\s*\(\s*['"`]([^'"`]+)`` |
+
+In den Tabellen oben und unten steht `\|` fuer ein Alternations-`|` — die Markdown-Tabelle verlangt die Maskierung. Beim Kopieren in grep oder python wird daraus wieder ein blankes `|`; die unmaskierte Fassung aller Muster steht in `scripts/recon.sh` Stufe 6.
 
 **Der wichtigste Befund:** ein Muster, das auf sprechende Bezeichner setzt (`axios|http|api|client` vor `.post(`), liefert im minifizierten Bundle **null** Treffer — die Namen sind wegminifiziert (`a.post(...)`, `e.get(...)`). Die letzte Zeile lässt jeden Bezeichner zu und findet damit auch `POST /orders/checkout` und `GET /internal/admin/flags`. Preis ist Rauschen (`.get()` auf Maps) — billiger als ein verpasster Endpunkt.
 

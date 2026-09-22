@@ -1,0 +1,39 @@
+# Beweismaterial bleibt lokal.
+#
+# Artefakte unter evidence/ entstehen aus echtem Traffic gegen ein autorisiertes Target und
+# koennen Session-Cookies, Auth-Header, Tokens und PII enthalten - auch nach dem Scrubbing
+# (evidence/README.md, Abschnitt 4) bleibt das Restrisiko. Sektion 2 des Hunt-Prompts verbietet,
+# Findings Dritten zu zeigen oder in oeffentliche Repos zu legen. Deshalb wird von evidence/ nur
+# die Struktur und das Regelwerk versioniert, nie der Beleg selbst.
+
+# 1) Die haeufigsten Artefakttypen, namentlich
+evidence/**/*.har
+evidence/**/*.png
+evidence/**/*.jpg
+evidence/**/*.jpeg
+evidence/**/*.gif
+evidence/**/*.mp4
+evidence/**/*.webm
+evidence/**/*.txt
+evidence/**/*.log
+evidence/**/*.json
+evidence/**/*.csv
+evidence/**/*.js
+evidence/**/*.map
+
+# 2) Auffangnetz: alles Weitere unter evidence/ ebenfalls ignorieren,
+#    damit ein neuer Dateityp nicht versehentlich mitkommt.
+evidence/**
+
+# 3) Ausnahmen - letzter Treffer gewinnt. Ohne die Verzeichnis-Zeile steigt git gar nicht
+#    erst in evidence/ hinab und die folgenden Negativ-Pattern greifen nicht.
+!evidence/**/
+!evidence/README.md
+!evidence/**/*_matrix.md
+!evidence/**/.gitkeep
+
+# Scratch und Werkzeugreste
+.DS_Store
+*.swp
+node_modules/
+__pycache__/

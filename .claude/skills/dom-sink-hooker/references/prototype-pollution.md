@@ -55,17 +55,27 @@ Zählt als Blocker im Sinne des Persistenz-Mindestmaßes; Diagnose zuerst (entfe
 
 ## 5. Gadget-Suche im Bundle
 
-Bundle vorher lesbar machen: `npx --no-install prettier --parser babel BUNDLE.js`. Namen sind minifiziert — such nach **String-Literalen und Strukturen**, nie nach sprechenden Bezeichnern.
+Bundle vorher lesbar machen: `npx --no-install prettier --parser babel BUNDLE.js > BUNDLE.pretty.js`. Namen sind minifiziert — such nach **String-Literalen und Strukturen**, nie nach sprechenden Bezeichnern.
+
+Alle Muster sind PCRE und brauchen `grep -P`. Unter `grep -E` liefern sie still falsche Ergebnisse: `(?:...)` wird nicht als Gruppe gelesen, und `[\w$]` ist dort die Zeichenmenge `\`, `w`, `$`.
 
 | Ziel | Suchmuster |
 |---|---|
 | Direkter Bezug auf die Kette | `__proto__` · `constructor` · `prototype` als Literal |
-| Vorhandener Schutz (Negativ-Befund) | `hasOwnProperty` · `Object.create\(\s*null\s*\)` · `Object.freeze` · `Map\(` |
-| Merge-Kandidat (for-in ohne Guard) | `\bfor\s*\(\s*(?:var\|let\|const)\s+[\w$]+\s+in\s+[\w$]+\s*\)` |
-| Rekursion im Merge | in derselben Funktion zusätzlich `typeof\s+[\w$]+\s*===?\s*['"]object['"]` |
+| Vorhandener Schutz (Negativ-Befund) | `hasOwnProperty` · `Object\.create\(\s*null\s*\)` · `Object\.freeze` · `Map\(` |
+| Rekursion im Merge | in derselben Funktion zusätzlich `typeof\s+[\w$\[\].]+\s*===?\s*['"]object['"]` — die Zeichenklasse muss `e[n]` mit abdecken, sonst entgeht dir genau die indizierte Form, die in Merge-Schleifen steht |
 | Pfad-Setter | `\.split\(\s*['"]\.['"]\s*\)` |
 | Query-Parser mit Bracket-Syntax | `\.split\(\s*['"]&['"]\s*\)` in Verbindung mit `decodeURIComponent` |
-| Options-Objekt mit Default-Fallback | `\|\|\s*\{\s*\}` · `\?\?\s*\{\s*\}` — dort greifen geerbte Properties |
+
+Zwei Muster enthalten Pipe-Zeichen und sind in einer Tabellenzelle nicht eindeutig notierbar — die stehen hier als fertige Kommandos:
+
+```bash
+# Merge-Kandidat: for-in ohne hasOwnProperty-Guard
+grep -nP '\bfor\s*\(\s*(?:var|let|const)\s+[\w$]+\s+in\s+[\w$]+\s*\)' BUNDLE.pretty.js
+# Options-Objekt mit Default-Fallback — dort greifen geerbte Properties
+grep -nP '\|\|\s*\{\s*\}' BUNDLE.pretty.js
+grep -nP '\?\?\s*\{\s*\}' BUNDLE.pretty.js
+```
 
 ## 6. Welche Properties ziehen in Sinks
 
@@ -88,7 +98,7 @@ Der stärkste Hebel ist meist nicht das Setzen eines Wertes, sondern das **Füll
 Der Trick: **der verschmutzte Wert ist der Marker.** Dann macht das Sink-Log die Kette sichtbar, ohne dass du sie erzählen musst.
 
 1. Marker vor der Injektion setzen: `window.__XSS_MARKERS = ['DX_XSS','xss7q3z']`. `__xssMarkers()` reicht nicht — es ändert nur das Marker-Array von `sink-hook.js`, nicht das von `source-watch.js`.
-2. Hooks in dieser Reihenfolge injizieren: `assets/hooks/sink-hook.js`, dann `assets/hooks/source-watch.js`, dann `assets/hooks/postmessage-watch.js`. Die Reihenfolge ist bindend — beide ersten Dateien definieren den Cookie-Descriptor neu und ketten nur so korrekt.
+2. Hooks in der in `../SKILL.md` vorgegebenen Reihenfolge injizieren: `../assets/hooks/sink-hook.js`, dann `../assets/hooks/source-watch.js`, dann `../assets/hooks/postmessage-watch.js`. Jede Datei genau einmal — alle drei haben eine Installations-Sperre und geben beim zweiten Aufruf nur `already installed` zurück, ohne erneut zu hooken.
 3. Flow mit `?__proto__[GADGET_PROPERTY]=xss7q3z` durchlaufen. Ladung so wählen, dass der Marker im Wert steht, nicht nur im Schlüssel.
 4. `__xssDump(true)` — jeder tainted Eintrag ist ein belegtes Gadget. Sink-Name, Wert und Stacktrace (Datei:Zeile) in die Kandidaten-Matrix.
 5. `__srcDump(true)` und `__srcSnapshot()` zeigen, über welche Source der Wert hereinkam — bei Hash-Vektoren steht er in `location.hash`.
