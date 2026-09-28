@@ -27,28 +27,28 @@ ersten aktiven Request dort nachlesen.
 
 | Host | Rolle (Hypothese) | Programm-Notiz | Status |
 |---|---|---|---|
-| `app.livenation.com` | App-Origin, Session | Interesse: Authentication | ungetestet |
-| `app.ticketmaster.com` | App-Origin, Session | Interesse: API + Authentication | ungetestet |
-| `app.ticketmaster.ca` | App-Origin regional | API + Authentication | ungetestet |
-| `app.ticketmaster.co.uk` | App-Origin regional | API + Authentication | ungetestet |
-| `app.ticketmaster.com.au` | App-Origin regional | API + Authentication | ungetestet |
-| `app.ticketmaster.com.mx` | App-Origin regional | API + Authentication | ungetestet |
-| `app.ticketmaster.eu` | App-Origin regional | API + Authentication | ungetestet |
-| `app.ticketmaster.ie` | App-Origin regional | API + Authentication | ungetestet |
-| `ticketmaster.com` | Consumer-Hauptorigin | — | ungetestet |
-| `ticketmaster.ca` | Consumer regional | — | ungetestet |
-| `ticketmaster.co.uk` | Consumer regional | — | ungetestet |
-| `ticketmaster.com.br` | Consumer regional | — | ungetestet |
-| `ticketmaster.com.mx` | Consumer regional | — | ungetestet |
-| `ticketmaster.de` | Consumer regional | — | ungetestet |
-| `livenation.com` | Consumer-Hauptorigin | — | ungetestet |
-| `livenation.me` | Consumer | — | ungetestet |
-| `www.livenation.co.uk` | Consumer regional | — | ungetestet |
-| `signup.ticketmaster.com` | **Kampagnen-Target**: Persona & ASU Sign-Up Verification | eigener Bounty-Campaign-Text am Asset | ungetestet |
-| `frontgatetickets.com` | Festival-Ticketing | — | ungetestet |
-| `www.lineup.com.mx` | Regional-Ticketing | — | ungetestet |
-| `www.onthewaterfrontfestival.com` | Event-Site | — | ungetestet |
-| `www.royalarena.dk` | Venue-Site | — | ungetestet |
+| `app.livenation.com` | App-Origin, Session | Interesse: Authentication | 404 auf /, frame-ancestors none + XFO DENY |
+| `app.ticketmaster.com` | App-Origin, Session | Interesse: API + Authentication | 404 auf /, nicht framebar |
+| `app.ticketmaster.ca` | App-Origin regional | API + Authentication | 404 auf /, nicht framebar |
+| `app.ticketmaster.co.uk` | App-Origin regional | API + Authentication | 404 auf /, nicht framebar |
+| `app.ticketmaster.com.au` | App-Origin regional | API + Authentication | 404 auf /, nicht framebar |
+| `app.ticketmaster.com.mx` | App-Origin regional | API + Authentication | 404 auf /, nicht framebar |
+| `app.ticketmaster.eu` | App-Origin regional | API + Authentication | 404 auf /, nicht framebar |
+| `app.ticketmaster.ie` | App-Origin regional | API + Authentication | 404 auf /, nicht framebar |
+| `ticketmaster.com` | Consumer-Hauptorigin | — | **403 Bot-Block** von dieser IP |
+| `ticketmaster.ca` | Consumer regional | — | **403 Bot-Block** |
+| `ticketmaster.co.uk` | Consumer regional | — | **403 Bot-Block** |
+| `ticketmaster.com.br` | Consumer regional | — | **403 Bot-Block** |
+| `ticketmaster.com.mx` | Consumer regional | — | **403 Bot-Block** |
+| `ticketmaster.de` | Consumer regional | — | **403 Bot-Block** |
+| `livenation.com` | Consumer-Hauptorigin | — | 200, **keine CSP** |
+| `livenation.me` | Consumer | — | 200, CSP mit unsafe-inline+eval, SID/BID |
+| `www.livenation.co.uk` | Consumer regional | — | 200, unsafe-inline+eval, SID/BID, instrumentiert |
+| `signup.ticketmaster.com` | **Kampagnen-Target**: Persona & ASU Sign-Up Verification | eigener Bounty-Campaign-Text am Asset | **403 Bot-Block** |
+| `frontgatetickets.com` | Festival-Ticketing | — | 200, Webflow+jQuery, instrumentiert |
+| `www.lineup.com.mx` | Regional-Ticketing | — | 200, Next.js, instrumentiert |
+| `www.onthewaterfrontfestival.com` | Event-Site | — | 200, Codebasis wie co.uk |
+| `www.royalarena.dk` | Venue-Site | — | 200, Codebasis wie co.uk |
 
 Mobile (nicht Gegenstand dieser Web-XSS-Runde): `dk.royalarena.app`,
 Apple-Store-IDs `1181913144`, `500003565`.
@@ -72,6 +72,10 @@ Nach Origin-Wert, nicht nach Bequemlichkeit:
 
 ## Testfortschritt
 
-Nichts getestet. Grund: der Container, in dem diese Analyse läuft, hat keinen
-Egress zu den Zielen (siehe `offline-analysis.md`, Abschnitt „Netz"). Die
-Live-Verifikation steht komplett aus; `recon/` enthält den ausführbaren Ablauf.
+Live-Durchlauf am 2026-09-28 nach Freigabe des Netzzugangs — Ergebnisse,
+ausgeschlossene Flächen und der offene Lead in `live-analysis.md`.
+Kurzfassung: **kein feuerbares XSS gefunden**. Die 14 Ticketmaster-Hosts sind von
+dieser IP durch Bot-Schutz nicht prüfbar. Auf den erreichbaren
+Live-Nation-Hosts erreicht kein URL-Wert einen HTML- oder Code-Sink; belegt ist
+ein ungefilterter `dangerouslySetInnerHTML`-Sink, dem die angreiferkontrollierte
+Quelle fehlt.

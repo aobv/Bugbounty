@@ -43,6 +43,7 @@ evidence/**
 #    gehoert hier NICHT hinein, auch nicht als .md.
 !evidence/**/*-analysis.md
 !evidence/**/recon/*.sh
+!evidence/**/recon/*.mjs
 !evidence/**/recon/verify-*.md
 
 # Scratch und Werkzeugreste
