@@ -10,13 +10,16 @@ diese Datei macht sie benutzbar.
 ```
 /home/user/Bugbounty/evidence/
 ├── README.md              (diese Datei, versioniert)
-└── <target>/              hier: wolt/
-    ├── wolt_matrix.md     Kandidaten-Matrix, Versuchs-Log, Phasen-Log (versioniert)
+└── <target>/              hier: wolt/, livenation/
+    ├── <target>_matrix.md Kandidaten-Matrix, Versuchs-Log, Phasen-Log (versioniert)
+    ├── *-analysis.md      Analyse aus öffentlichen Quellen, kein Traffic (versioniert)
     ├── recon/             Rohausgabe der Recon-Phase: Subdomains, Hosts, URLs, JS, Source-Maps
+    │   ├── *.sh           selbst geschriebenes Recon-Werkzeug (versioniert)
+    │   └── verify-*.md    Verifikations-Ablauf pro Hypothese (versioniert)
     └── *.har *.txt *.png  Belege nach dem Benennungsschema unten (NICHT versioniert)
 ```
 
-Ein Verzeichnis pro Target (`<target>` = `wolt`). Nichts liegt außerhalb. Kein Beleg im
+Ein Verzeichnis pro Target. Nichts liegt außerhalb. Kein Beleg im
 Scratchpad, kein Beleg in `/tmp` — was dort liegt, ist nach der Session weg und belegt nichts.
 
 ## 2 — Benennung
@@ -118,7 +121,10 @@ Diagnosen — keine Tokens, keine Cookies, keine PII.
 - Findings werden nicht Dritten gezeigt, nicht gepostet, nicht in öffentliche Repos gelegt
   (Sektion 2 des Hunt-Prompts).
 - `/home/user/Bugbounty/.gitignore` hält die Artefakte aus dem Repo heraus. Versioniert sind nur
-  diese Datei, `*_matrix.md` und die `.gitkeep`-Dateien. Die Ignore-Regel ist eine zweite
+  diese Datei, `*_matrix.md`, `.gitkeep` sowie Analyse und Werkzeug, die nicht aus Traffic
+  entstehen (`*-analysis.md`, `recon/*.sh`, `recon/verify-*.md` — Abschnitt 4 der `.gitignore`
+  begründet die Grenze). Ein `.md`, das Request- oder Response-Daten eines Targets zitiert, ist
+  Beleg und fällt nicht darunter. Die Ignore-Regel ist eine zweite
   Sicherung, nicht die erste: die erste ist das Scrubbing aus Abschnitt 4.
 - `git add -f` auf ein Artefakt ist der Weg, diese Sicherung zu umgehen. Wenn du ihn gehst, weißt
   du warum — und die Datei ist vorher bereinigt.

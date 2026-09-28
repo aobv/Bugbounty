@@ -32,6 +32,19 @@ evidence/**
 !evidence/**/*_matrix.md
 !evidence/**/.gitkeep
 
+# 4) Zweite Ausnahmegruppe: Analyse und Werkzeug, nicht Beleg.
+#    Diese Dateien entstehen NICHT aus Traffic gegen ein Target. Sie leiten sich aus
+#    oeffentlichen Quellen ab (publizierte npm-Pakete, GitHub-Repos, der
+#    bounty-targets-Scope-Datensatz) oder sind selbst geschriebenes Werkzeug. Sie
+#    koennen daher keine Session-Cookies, Tokens oder PII tragen - der Grund aus dem
+#    Kopf dieser Datei greift bei ihnen nicht, und ohne Versionierung waere die
+#    Analyse nach dem Ende der Session verloren.
+#    Die Grenze ist scharf zu halten: was aus einem Request gegen ein Target stammt,
+#    gehoert hier NICHT hinein, auch nicht als .md.
+!evidence/**/*-analysis.md
+!evidence/**/recon/*.sh
+!evidence/**/recon/verify-*.md
+
 # Scratch und Werkzeugreste
 .DS_Store
 *.swp

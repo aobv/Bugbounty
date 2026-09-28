@@ -1,0 +1,299 @@
+{
+  "handle": "live_nation",
+  "name": "Live Nation",
+  "policy_url": "https://hackerone.com/live_nation",
+  "website": "http://livenation.com",
+  "offers_bounties": true,
+  "submission_state": "open",
+  "dataset_age_hours": 0.0,
+  "counts": {
+    "in_scope": 25,
+    "out_of_scope": 0
+  },
+  "files": {
+    "domains.txt": "scope/live_nation/domains.txt",
+    "mobile-apps.txt": "scope/live_nation/mobile-apps.txt"
+  },
+  "file_counts": {
+    "domains.txt": 22,
+    "mobile-apps.txt": 3
+  },
+  "entries": [
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "We are interested in Authentication Vulnerabilities",
+      "original": "app.livenation.com",
+      "kind": "domain",
+      "value": "app.livenation.com",
+      "raw": "app.livenation.com"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "We are interested in API and Authentication Vulnerabilities",
+      "original": "app.ticketmaster.ca",
+      "kind": "domain",
+      "value": "app.ticketmaster.ca",
+      "raw": "app.ticketmaster.ca"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "We are interested in API and Authentication Vulnerabilities",
+      "original": "app.ticketmaster.co.uk",
+      "kind": "domain",
+      "value": "app.ticketmaster.co.uk",
+      "raw": "app.ticketmaster.co.uk"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "We are interested in API and Authentication Vulnerabilities",
+      "original": "app.ticketmaster.com",
+      "kind": "domain",
+      "value": "app.ticketmaster.com",
+      "raw": "app.ticketmaster.com"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "We are interested in API and Authentication Vulnerabilities",
+      "original": "app.ticketmaster.com.au",
+      "kind": "domain",
+      "value": "app.ticketmaster.com.au",
+      "raw": "app.ticketmaster.com.au"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "We are interested in API and Authentication Vulnerabilities",
+      "original": "app.ticketmaster.com.mx",
+      "kind": "domain",
+      "value": "app.ticketmaster.com.mx",
+      "raw": "app.ticketmaster.com.mx"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "We are interested in API and Authentication Vulnerabilities",
+      "original": "app.ticketmaster.eu",
+      "kind": "domain",
+      "value": "app.ticketmaster.eu",
+      "raw": "app.ticketmaster.eu"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "We are interested in API and Authentication Vulnerabilities",
+      "original": "app.ticketmaster.ie",
+      "kind": "domain",
+      "value": "app.ticketmaster.ie",
+      "raw": "app.ticketmaster.ie"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "GOOGLE_PLAY_APP_ID",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n**No automated scanning on checkout/ payment flows.**",
+      "original": "dk.royalarena.app",
+      "kind": "app",
+      "value": "dk.royalarena.app",
+      "raw": "dk.royalarena.app"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n**No automated scanning on checkout/ payment flows.**",
+      "original": "frontgatetickets.com",
+      "kind": "domain",
+      "value": "frontgatetickets.com",
+      "raw": "frontgatetickets.com"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "APPLE_STORE_APP_ID",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n**No automated scanning on checkout/ payment flows.**",
+      "original": "https://apps.apple.com/no/app/royal-arena/id1181913144",
+      "kind": "app",
+      "value": "1181913144",
+      "raw": "https://apps.apple.com/no/app/royal-arena/id1181913144"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "APPLE_STORE_APP_ID",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": null,
+      "original": "https://apps.apple.com/us/app/ticketmaster-buy-sell-tickets/id500003565",
+      "kind": "app",
+      "value": "500003565",
+      "raw": "https://apps.apple.com/us/app/ticketmaster-buy-sell-tickets/id500003565"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "# Bug Bounty Campaign: Persona & ASU Sign-Up Verification Testing\n\n## Overview\n\nWe are launching a focused testing campaign inviting our security researcher community to evaluate the identity verification controls on our Artist Sign-Up (ASU) flow. This campaign was created in direct response to community reports suggesting that verification steps in this flow may be bypassable.\n\n## Test Target\n\n**URL:** https://signup.ticketmaster.com/bugbountytest\n\nThis is a dedicated test event set up specifically for this campaign. It is live on our production infrastructure but isolated so that testing against it does not cause any operational impact. Please limit your testing activity to this URL only. Testing against any other live event or production sign-up flow is out of scope and outside the terms of our bug bounty program.\n\n## What to Focus On\n\nThis campaign accepts submissions for the following two areas only:\n\n* Bypassing Persona identity verification during the sign-up process\n* Bypassing the ASU (Artist Sign-Up) screen itself\n\nThese are the only submissions we will accept for this campaign. Findings outside of these two areas will not be accepted under this campaign.\n\nFor this test event, verification prompting has been configured so that every sign-up attempt should trigger a Persona identity check. If you are able to complete a sign-up, reach a post-verification state, or otherwise progress through the flow without a valid Persona verification having occurred, that is a reportable finding.\n\n## ASU Sign-Up Flow (Test Campaign)\n\n1. **Landing** \u2013 User navigates to the test event URL: https://signup.ticketmaster.com/bugbountytest\n2. **Account Creation** \u2013 User creates a username and password\n3. **Email Verification** \u2013 User verifies their email address\n4. **Phone Verification** \u2013 User verifies their phone number\n5. **Redirect** \u2013 User is redirected to the identity verification step\n6. **Persona Verification** \u2013 User is prompted to verify their identity via Persona (photo ID + selfie match)\n7. **Completion** \u2013 Sign-up is finalized\n\n## Notes for Researchers\n\n- This is a test event built for this purpose. Please do not test against real artist sign-up campaigns or other live events.",
+      "original": "https://signup.ticketmaster.com/bugbountytest",
+      "kind": "domain",
+      "value": "signup.ticketmaster.com",
+      "raw": "https://signup.ticketmaster.com/bugbountytest",
+      "path_scoped": true
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n**No automated scanning on checkout/ payment flows.**",
+      "original": "livenation.com",
+      "kind": "domain",
+      "value": "livenation.com",
+      "raw": "livenation.com"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n**No automated scanning on checkout/ payment flows.**",
+      "original": "livenation.me",
+      "kind": "domain",
+      "value": "livenation.me",
+      "raw": "livenation.me"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "ticketmaster.ca",
+      "kind": "domain",
+      "value": "ticketmaster.ca",
+      "raw": "ticketmaster.ca"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "ticketmaster.co.uk",
+      "kind": "domain",
+      "value": "ticketmaster.co.uk",
+      "raw": "ticketmaster.co.uk"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "ticketmaster.com",
+      "kind": "domain",
+      "value": "ticketmaster.com",
+      "raw": "ticketmaster.com"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "ticketmaster.com.br",
+      "kind": "domain",
+      "value": "ticketmaster.com.br",
+      "raw": "ticketmaster.com.br"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "ticketmaster.com.mx",
+      "kind": "domain",
+      "value": "ticketmaster.com.mx",
+      "raw": "ticketmaster.com.mx"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "ticketmaster.de",
+      "kind": "domain",
+      "value": "ticketmaster.de",
+      "raw": "ticketmaster.de"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n**No automated scanning on checkout/ payment flows.**",
+      "original": "www.lineup.com.mx",
+      "kind": "domain",
+      "value": "www.lineup.com.mx",
+      "raw": "www.lineup.com.mx"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "www.livenation.co.uk",
+      "kind": "domain",
+      "value": "www.livenation.co.uk",
+      "raw": "www.livenation.co.uk"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "www.onthewaterfrontfestival.com",
+      "kind": "domain",
+      "value": "www.onthewaterfrontfestival.com",
+      "raw": "www.onthewaterfrontfestival.com"
+    },
+    {
+      "bucket": "in_scope",
+      "asset_type": "URL",
+      "eligible_for_bounty": true,
+      "max_severity": "critical",
+      "instruction": "Only the listed domains, other regional websites are out of scope\n\n\n\n**No automated scanning on checkout/ payment flows.**",
+      "original": "www.royalarena.dk",
+      "kind": "domain",
+      "value": "www.royalarena.dk",
+      "raw": "www.royalarena.dk"
+    }
+  ]
+}
